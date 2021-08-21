@@ -19,7 +19,7 @@ criterion = CrossEntropyLoss()
 dataset_path = "../datasets/Intel_image_classification"
 train_dataset = IntelImageClassification(dataset_path=dataset_path, is_train=True)
 test_dataset = IntelImageClassification(dataset_path=dataset_path, is_train=False)
-train_loader = DataLoader(train_dataset, batch_size=2, shuffle=True)
+train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
 for imgs, labels in train_loader:
