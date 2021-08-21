@@ -28,6 +28,18 @@ class MobileNet(nn.Module):
         )
         self.classifier = nn.Linear(int(1024 * alpha), class_num)
 
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out')
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.ones_(m.weight)
+                nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.zeros_(m.bias)
+
     def forward(self, x):
         x = self.model(x)
         x = x.view(-1, int(1024 * self.alpha))
