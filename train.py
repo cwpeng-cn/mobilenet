@@ -1,3 +1,4 @@
+import torch
 from torch.utils.data import DataLoader
 from torch.optim import Adam, lr_scheduler
 from torch.nn import CrossEntropyLoss
@@ -12,12 +13,26 @@ net = MobileNet(class_num=6).cuda()
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
 scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60, 90, 100], gamma=0.1)
 criterion = CrossEntropyLoss()
-train_dataset = IntelImageClassification(dataset_path=dataset_path, is_train=True)
-test_dataset = IntelImageClassification(dataset_path=dataset_path, is_train=False)
+train_dataset = IntelImageClassification(dataset_path=dataset_path, mode="train")
+val_dataset = IntelImageClassification(dataset_path=dataset_path, mode="val")
 train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
+val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
+
+
+def validation():
+    net.eval()
+    correct_num = 0
+    for imgs, labels in val_loader:
+        imgs = imgs.cuda()
+        out = net(imgs)
+        prediction = torch.argmax(out, 1).cpu()
+        correct_num += sum(labels == prediction)
+    net.train()
+    return correct_num / val_loader.dataset.__len__()
+
 
 for epoch in range(EPOCH):
+    print(validation())
     for i, (imgs, labels) in enumerate(train_loader):
         imgs = imgs.cuda()
         labels = labels.cuda()
@@ -27,5 +42,5 @@ for epoch in range(EPOCH):
         loss.backward()
         optimizer.step()
         if i % 5 == 0:
-            print(loss.item())
+            print("Epoch:{}, Loss:{}".format(epoch, loss.item()))
     scheduler.step()
