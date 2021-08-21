@@ -8,8 +8,7 @@ LR = 0.01
 EPOCH = 120
 dataset_path = "../datasets/Intel_image_classification"
 
-
-net = MobileNet(class_num=6)
+net = MobileNet(class_num=6).cuda()
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
 scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60, 90, 100], gamma=0.1)
 criterion = CrossEntropyLoss()
@@ -19,7 +18,6 @@ train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
 for epoch in range(EPOCH):
-    scheduler.step()
     for i, (imgs, labels) in enumerate(train_loader):
         imgs = imgs.cuda()
         labels = labels.cuda()
@@ -30,3 +28,4 @@ for epoch in range(EPOCH):
         optimizer.step()
         if i % 5 == 0:
             print(loss.item())
+    scheduler.step()
