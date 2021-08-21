@@ -8,6 +8,7 @@ LR = 0.01
 EPOCH = 120
 dataset_path = "../datasets/Intel_image_classification"
 
+
 net = MobileNet(class_num=6)
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
 scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60, 90, 100], gamma=0.1)
