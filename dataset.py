@@ -1,7 +1,7 @@
+import os
+from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
-from PIL import Image
-import os
 
 
 class IntelImageClassification(Dataset):
@@ -29,7 +29,7 @@ class IntelImageClassification(Dataset):
             ])
         else:
             self.transforms = transforms.Compose([
-                transforms.Resize((224, 224)),
+                transforms.Resize((150, 150)),
                 transforms.ToTensor(),
                 transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
             ])
