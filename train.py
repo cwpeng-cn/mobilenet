@@ -38,7 +38,7 @@ def validation():
     accuracy = correct_num / val_dataset.__len__()
     if accuracy > best_accuracy:
         best_accuracy = accuracy
-        torch.save(net.state_dict(), MODEL_PATH)
+        torch.save(net.state_dict(), MODEL_PATH, _use_new_zipfile_serialization=False)
         print("Current Best Accuracy:{}".format(accuracy))
 
 
