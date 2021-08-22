@@ -7,14 +7,14 @@ from model import MobileNet
 from dataset import IntelImageClassification, LossWriter
 
 LR = 0.01
-EPOCH = 60
+EPOCH = 30
 DATASET_PATH = "../datasets/Intel_image_classification"
 MODEL_PATH = "./MobileNet.pth"
 LOG_PATH = "./Log.txt"
 
 net = MobileNet(class_num=6).cuda()
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
-scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
+scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[5, 12, 20, 25], gamma=0.1)
 criterion = CrossEntropyLoss()
 train_dataset = IntelImageClassification(dataset_path=DATASET_PATH, mode="train")
 val_dataset = IntelImageClassification(dataset_path=DATASET_PATH, mode="val")
