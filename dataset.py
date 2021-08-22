@@ -61,11 +61,11 @@ class IntelImageClassification(Dataset):
 
 
 class LossWriter:
-    def __init__(self, save_dir):
-        self.save_dir = save_dir
+    def __init__(self, save_path):
+        self.save_path = save_path
 
-    def add(self, loss_name, loss, i):
-        with open(os.path.join(self.save_dir, loss_name + ".txt"), mode="a") as f:
+    def add(self, loss, i):
+        with open(self.save_path, mode="a") as f:
             term = str(i) + " " + str(loss) + "\n"
             f.write(term)
             f.close()

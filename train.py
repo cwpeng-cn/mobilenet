@@ -10,7 +10,7 @@ LR = 0.01
 EPOCH = 30
 DATASET_PATH = "../datasets/Intel_image_classification"
 MODEL_PATH = "./MobileNet.pth"
-LOG_PATH = "./Log"
+LOG_PATH = "./Log.txt"
 
 net = MobileNet(class_num=6).cuda()
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
@@ -20,7 +20,7 @@ train_dataset = IntelImageClassification(dataset_path=DATASET_PATH, mode="train"
 val_dataset = IntelImageClassification(dataset_path=DATASET_PATH, mode="val")
 train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
-writer = LossWriter(save_dir=LOG_PATH)
+writer = LossWriter(save_path=LOG_PATH)
 best_accuracy = 0
 
 
@@ -54,7 +54,7 @@ for epoch in range(EPOCH):
         optimizer.step()
         if step % 5 == 0:
             print("Epoch:{}, Loss:{}".format(epoch, loss.item()))
-            writer.add(loss_name="MobileNet", loss=loss.item(), i=step)
+            writer.add(loss=loss.item(), i=step)
         step += 1
     validation()
     scheduler.step()
