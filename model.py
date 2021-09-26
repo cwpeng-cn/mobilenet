@@ -3,9 +3,6 @@ from torch import nn
 
 class MobileNet(nn.Module):
     def __init__(self, class_num=1000, alpha=1):
-        if alpha not in [0.25, 0.5, 0.75, 1.0]:
-            raise ValueError("参数alpha取值需要在[0.24,0.5.0.75,1.0]中!")
-
         super(MobileNet, self).__init__()
         self.alpha = alpha
 
@@ -49,13 +46,11 @@ class MobileNet(nn.Module):
     @staticmethod
     def deep_wise_conv_bn(in_channels, out_channels, stride):
         return nn.Sequential(
-
             # 深度卷积
             nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1,
                       groups=in_channels, bias=False),
             nn.BatchNorm2d(in_channels),
             nn.ReLU(inplace=True),
-
             # 逐点卷积
             nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0, bias=False),
             nn.BatchNorm2d(out_channels),
