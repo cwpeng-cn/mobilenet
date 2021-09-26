@@ -24,7 +24,9 @@ class MobileNet(nn.Module):
             nn.AdaptiveAvgPool2d(1)
         )
         self.classifier = nn.Linear(int(1024 * alpha), class_num)
+        self.parameter_init()
 
+    def parameter_init(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out')
