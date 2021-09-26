@@ -66,5 +66,7 @@ class MobileNet(nn.Module):
     def conv_bn(in_channels, out_channels, stride):
         return nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=3, stride=stride, padding=1,
-                      bias=False)
+                      bias=False),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True)
         )
