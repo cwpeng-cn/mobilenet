@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch.optim import Adam, lr_scheduler
 from torch.nn import CrossEntropyLoss
-from model import MobileNet
+from model import MobileNetV2 as MobileNet
 from dataset import IntelImageClassification, LossWriter
 
 LR = 0.01
@@ -12,7 +12,7 @@ DATASET_PATH = "../datasets/Intel_image_classification"
 MODEL_PATH = "./MobileNet.pth"
 LOG_PATH = "./Log.txt"
 
-net = MobileNet(class_num=6).cuda()
+net = MobileNet(num_classes=6).cuda()
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
 scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[5, 12, 20, 25], gamma=0.1)
 criterion = CrossEntropyLoss()

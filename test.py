@@ -2,7 +2,7 @@ import os
 import time
 import torch
 from PIL import Image
-from model import MobileNet
+from model import MobileNetV1 as MobileNet
 from torchvision import transforms
 
 TEST_IMAGES_PATH = './test_images'
