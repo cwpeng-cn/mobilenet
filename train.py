@@ -23,6 +23,9 @@ val_loader = DataLoader(val_dataset, batch_size=128, shuffle=False)
 writer = LossWriter(save_path=LOG_PATH)
 best_accuracy = 0
 
+print("Model Architecture")
+print(net)
+
 
 def validation():
     global best_accuracy
@@ -43,6 +46,8 @@ def validation():
 
 
 step = 0
+length = len(train_loader)
+
 for epoch in range(EPOCH):
     for imgs, labels in train_loader:
         imgs = imgs.cuda()
@@ -53,7 +58,7 @@ for epoch in range(EPOCH):
         loss.backward()
         optimizer.step()
         if step % 5 == 0:
-            print("Epoch:{}, Loss:{}".format(epoch, loss.item()))
+            print("Step/Epoch:[{}/{}], Loss:{}".format(step % length, epoch, loss.item()))
             writer.add(loss=loss.item(), i=step)
         step += 1
     validation()
