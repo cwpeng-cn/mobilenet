@@ -58,7 +58,7 @@ for epoch in range(EPOCH):
         loss.backward()
         optimizer.step()
         if step % 5 == 0:
-            print("Step/Epoch:[{}/{}], Loss:{}".format(step % length, epoch, loss.item()))
+            print("Epoch:[{}],\tStep:[{}/{}],\tLoss:{}".format(epoch, step % length, length, loss.item()))
             writer.add(loss=loss.item(), i=step)
         step += 1
     validation()
