@@ -9,8 +9,8 @@ from dataset import IntelImageClassification, LossWriter
 LR = 0.01
 EPOCH = 30
 DATASET_PATH = "../datasets/Intel_image_classification"
-MODEL_PATH = "./MobileNet.pth"
-LOG_PATH = "./Log.txt"
+MODEL_PATH = "./MobileNetV2.pth"
+LOG_PATH = "./LogV2.txt"
 
 net = MobileNet(num_classes=6).cuda()
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
@@ -58,7 +58,7 @@ for epoch in range(EPOCH):
         loss.backward()
         optimizer.step()
         if step % 5 == 0:
-            print("Epoch:[{}],\tStep:[{}/{}],\tLoss:{}".format(epoch, step % length, length, loss.item()))
+            print("Epoch:[{}],Step:[{}/{}], Loss:{}".format(epoch, step % length, length, loss.item()))
             writer.add(loss=loss.item(), i=step)
         step += 1
     validation()
