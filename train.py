@@ -3,8 +3,10 @@ import torch
 from torch.utils.data import DataLoader
 from torch.optim import Adam, lr_scheduler
 from torch.nn import CrossEntropyLoss
-from model import MobileNetV1 as MobileNet
-from dataset import IntelImageClassification, LossWriter
+# from model import MobileNetV1 as MobileNet
+from model import MobileNetV2 as MobileNet
+from dataset import IntelImageClassification
+from utils import LossWriter
 
 LR = 0.01
 EPOCH = 30
@@ -12,7 +14,8 @@ DATASET_PATH = "../datasets/Intel_image_classification"
 MODEL_PATH = "./MobileNetV1.pth"
 LOG_PATH = "./LogV1.txt"
 
-net = MobileNet(num_classes=6).cuda()
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+net = MobileNet(num_classes=6).to(device)
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
 scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[5, 12, 20, 25], gamma=0.1)
 criterion = CrossEntropyLoss()
@@ -33,7 +36,7 @@ def validation():
     correct_num = 0
     with torch.no_grad():
         for imgs, labels in val_loader:
-            imgs = imgs.cuda()
+            imgs = imgs.to(device)
             out = net(imgs)
             prediction = torch.argmax(out, 1).cpu()
             correct_num += sum(prediction == labels)
@@ -50,8 +53,8 @@ length = len(train_loader)
 
 for epoch in range(EPOCH):
     for imgs, labels in train_loader:
-        imgs = imgs.cuda()
-        labels = labels.cuda()
+        imgs = imgs.to(device)
+        labels = labels.to(device)
         optimizer.zero_grad()
         out = net(imgs)
         loss = criterion(out, labels)

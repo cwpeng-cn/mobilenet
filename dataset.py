@@ -58,14 +58,3 @@ class IntelImageClassification(Dataset):
 
     def __len__(self):
         return len(self.paths)
-
-
-class LossWriter:
-    def __init__(self, save_path):
-        self.save_path = save_path
-
-    def add(self, loss, i):
-        with open(self.save_path, mode="a") as f:
-            term = str(i) + " " + str(loss) + "\n"
-            f.write(term)
-            f.close()

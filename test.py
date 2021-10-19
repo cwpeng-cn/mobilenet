@@ -27,6 +27,8 @@ for name in os.listdir(TEST_IMAGES_PATH):
     out = net(img_tensor)
     print("Name:{}, Class:{}, time:{}".format(name, CLASSES[torch.argmax(out, 1)], time.time() - start))
 
-# x = torch.rand(1, 3, 150, 150)
-# traced_script_module = torch.jit.trace(func=net, example_inputs=x)
-# traced_script_module.save("MobileNet.pt")
+print("模型转换开始")
+x = torch.rand(1, 3, 150, 150)
+traced_script_module = torch.jit.trace(func=net, example_inputs=x)
+traced_script_module.save("MobileNet.pt")
+print("模型转换结束，已保存为MobileNet.pt")
