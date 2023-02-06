@@ -15,7 +15,13 @@ DATASET_PATH = "../datasets/Intel_image_classification"
 MODEL_PATH = "./MobileNetV1.pth"
 LOG_PATH = "./LogV1.txt"
 
-device=torch.device("mps") # "dml","cpu"
+device=torch.device("mps") # "cpu"
+# try:
+#     import torch_directml
+#     device=torch_directml.device()
+# except:
+#     print("不支持DirctML")
+
 net = MobileNet(num_classes=6).to(device)
 optimizer = Adam(net.parameters(), lr=LR, betas=(0.9, 0.99))
 scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[5, 12, 20, 25], gamma=0.1)
